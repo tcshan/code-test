@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html ng-app="musicApp">
+
+<head>
+
+  <meta name="viewport" content="minimum-scale=1.0, width=device-width, maximum-scale=1.0, user-scalable=no" />
+  <meta charset="utf-8">
+  <title>Zymergen Frontend Code Test</title>
+  <link rel="stylesheet" href="./node_modules/bootstrap/dist/css/bootstrap.min.css" />
+  <link rel="stylesheet" type="text/css" href="./css/styles.css">
+  <script type="text/javascript" src="./node_modules/jquery/dist/jquery.min.js"></script>
+  <script type="text/javascript" src="./node_modules/angular/angular.min.js"></script>
+
+</head>
+
+<body>
+  <div ng-controller="albumsCtrl" class="albums">
+    <header>
+      <div class="bs-docs-masthead">
+        <span class="title">Albums</span>
+        <p>A fast and easy to use albums search engine</p>
+        <div class="input-group search-box">
+          <input type="text" class="form-control" ng-model="term" ng-keypress="onInputKeyPress(event)" placeholder="Search for artist or album...">
+          <span class="input-group-btn">
+            <button class="btn btn-default" type="button" ng-click="onSearch()">Go!</button>
+          </span>
+        </div>
+      </div>
+    </header>
+    <div class="container">
+      <p ng-show="isDefaultSearch" class="message">Here are some popular recommendation for you </p>
+      <p ng-show="!isDefaultSearch && !isLoadingData && !items" class="message">Sorry, no results found, please try other search term. </p>
+      <p ng-show="!isDefaultSearch && items && items.length>0" class="message">We have found {{items.length}} records for you</p>
+      <div class="col-md-3" ng-repeat="item in items | orderBy: 'releaseDate'">
+        <div class="album-item">
+          <img class="album-img" ng-src="{{item.artworkUrl100}}" ng-click="showAlbumInfo(item)" />
+          <span class="album-name" data-toggle="tooltip" data-placement="top" title="{{item.collectionCensoredName}}"><a ng-href="{{item.collectionViewUrl}}">{{item.collectionCensoredName}}</a></span>
+          <span class="artist-name" data-toggle="tooltip" data-placement="top" title="{{item.artistName}}"><a ng-href="{{item.artistViewUrl}}">{{item.artistName}}</a></span>
+        </div>
+      </div>
+    </div>
+    <div class="album-info">
+      <div class="modal-header">
+        <button type="button" class="close" ng-click="closeAlbumInfo()"><span>×</span></button>
+        <h4 class="modal-title">Album Info</h4>
+      </div>
+      <div class="info">
+        <img class="album-img" ng-src="{{selectedAlbum.artworkUrl100}}" />
+        <span class="album-name" data-toggle="tooltip" data-placement="top" title="{{selectedAlbum.collectionCensoredName}}"><a ng-href="{{selectedAlbum.collectionViewUrl}}">{{selectedAlbum.collectionCensoredName}}</a></span>
+        <span class="artist-name" data-toggle="tooltip" data-placement="top" title="{{selectedAlbum.artistName}}"><a ng-href="{{selectedAlbum.artistViewUrl}}">{{selectedAlbum.artistName}}</a></span>
+        <div class="more-info">
+          <div><span class="property">Release Date</span><span class="value">{{selectedAlbum.releaseDate|date:'yyyy-MM-dd'}}</span></div>
+          <div><span class="property">Track Count</span><span class="value">{{selectedAlbum.trackCount}}</span></div>
+          <div><span class="property">Country</span><span class="value">{{selectedAlbum.country}}</span></div>
+        </div>
+      </div>
+    </div>
+    <!-- Your answer here -->
+    <div ng-show="isLoadingData" class="loading-mask"><img class="album-img" ng-src="css/loading.gif" /></div>
+  </div>
+
+  <script type="text/javascript" src="./node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+  <script type="text/javascript" src="js/app.js"></script>
+  <script type="text/javascript" src="js/albumsCtrl.js"></script>
+
+</body>
+
+</html>
